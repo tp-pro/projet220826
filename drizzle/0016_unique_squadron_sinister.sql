@@ -1,0 +1,1 @@
+ALTER TABLE "bookings" ADD COLUMN "guest_email_shared" boolean DEFAULT false NOT NULL;

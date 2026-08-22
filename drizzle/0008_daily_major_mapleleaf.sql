@@ -1,0 +1,1 @@
+ALTER TABLE "listings" ADD COLUMN "certification_document_path" text;

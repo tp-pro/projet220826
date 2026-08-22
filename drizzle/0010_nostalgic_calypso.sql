@@ -1,0 +1,2 @@
+CREATE TYPE "public"."festival_category" AS ENUM('musique', 'litteraire', 'evenementiel', 'culturel');--> statement-breakpoint
+ALTER TABLE "festivals" ADD COLUMN "categories" "festival_category"[] DEFAULT '{}'::festival_category[] NOT NULL;

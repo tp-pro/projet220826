@@ -1,0 +1,3 @@
+# .prettierignore
+# Fichiers trackés par Git mais qu'on ne veut pas voir reformatés par Prettier
+package-lock.json

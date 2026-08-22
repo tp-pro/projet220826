@@ -1,0 +1,1 @@
+ALTER TABLE "festivals" DROP COLUMN "type";

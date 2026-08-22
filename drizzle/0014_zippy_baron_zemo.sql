@@ -1,0 +1,1 @@
+ALTER TABLE "listings" ADD COLUMN "min_guests" integer;

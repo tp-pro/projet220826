@@ -1,0 +1,83 @@
+@import 'tailwindcss';
+
+/*
+ * Direction "Balise" — repérage et carte de terrain, comme les drapeaux plantés
+ * dans un camping de festival pour retrouver sa tente. Palette claire uniquement
+ * pour la V1 (voir listings-setup.md / dbshema.md pour le contexte produit).
+ */
+@theme {
+  /* Fonds */
+  --color-paper: #f1f2ec; /* fond de page — papier de carte, pas un blanc/crème générique */
+  --color-surface: #ffffff; /* cartes, panneaux, formulaires */
+  --color-map: #dde0d6; /* bandeaux, zones mises en avant */
+
+  /* Texte */
+  --color-ink: #1f2a24; /* texte principal */
+  --color-contour: #445b4f; /* texte secondaire, courbes de niveau */
+  --color-muted: #66756c; /* texte tertiaire, placeholders */
+
+  /* Accents */
+  --color-beacon: #2c6e8e; /* accent principal — liens, CTA, focus */
+  --color-beacon-dark: #1f5470; /* hover/active du CTA */
+  --color-blaze: #c4922b; /* accent secondaire — badges, mise en avant */
+
+  /* Bordures */
+  --color-border: #c9d0c2;
+
+  /* Sémantique (statuts) */
+  --color-success: #3f7d5c;
+  --color-danger: #b23b3b;
+}
+
+@theme inline {
+  --font-display: var(--font-jost);
+  --font-sans: var(--font-public-sans);
+}
+
+:root {
+  color-scheme: light;
+}
+
+/* Dans Tailwind v4, le CSS non "layered" passe toujours avant les classes utilitaires
+   dans la cascade, quelle que soit la spécificité — ces styles de base doivent donc
+   être dans @layer base pour qu'une classe comme `text-surface` puisse les surcharger
+   (ex : le libellé actif du RoleSwitcher, blanc sur fond beacon). */
+@layer base {
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+  }
+
+  a {
+    color: var(--color-beacon);
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-beacon) 25%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-beacon);
+    outline-offset: 2px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    letter-spacing: 0.01em;
+  }
+}
+
+/* Motif de repli pour les visuels manquants (festival/logement sans photo) —
+   courbes de niveau, cohérent avec la direction "Balise". */
+.bg-topo {
+  background-color: var(--color-map);
+  background-image: repeating-radial-gradient(
+    circle at 30% 35%,
+    transparent 0px,
+    transparent 9px,
+    color-mix(in srgb, var(--color-contour) 22%, transparent) 10px,
+    transparent 11px
+  );
+}
