@@ -24,7 +24,7 @@ export async function signUpAction(
     password,
     options: {
       data: fullName ? { full_name: fullName } : undefined,
-      emailRedirectTo: `${env.NEXT_PUBLIC_APP_URL}/connexion`,
+      emailRedirectTo: `${env.NEXT_PUBLIC_APP_URL}/auth/callback`,
     },
   });
 
