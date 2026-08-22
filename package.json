@@ -13,8 +13,8 @@
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "db:seed": "tsx --env-file=.env.local scripts/seed.ts",
-    "storage:setup": "tsx --env-file=.env.local scripts/setup-storage.ts"
+    "db:seed": "tsx --env-file=.env.preprod scripts/seed.ts",
+    "storage:setup": "tsx --env-file=.env.preprod scripts/setup-storage.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.12.4",
