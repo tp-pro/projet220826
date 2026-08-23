@@ -92,7 +92,7 @@ export default async function ComptePage() {
           Mes demandes de mise en relation
         </Link>
         <Link href="/logements/demandes" className="block underline">
-          Demandes reçues sur mes logements
+          Demandes reçues sur mon logement
         </Link>
         <Link href="/mot-de-passe-oublie/nouveau" className="block underline">
           Changer mon mot de passe

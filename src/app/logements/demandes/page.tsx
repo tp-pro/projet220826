@@ -62,10 +62,10 @@ export default async function HostBookingRequestsPage() {
       <Breadcrumbs
         items={[
           { label: 'Mon compte', href: '/compte' },
-          { label: 'Demandes reçues sur mes logements' },
+          { label: 'Demandes reçues sur mon logement' },
         ]}
       />
-      <h1 className="text-2xl font-semibold">Demandes reçues sur mes logements</h1>
+      <h1 className="text-2xl font-semibold">Demandes reçues sur mon logement</h1>
 
       {rows.length === 0 ? (
         <p className="mt-8 text-sm text-gray-500">Aucune demande pour le moment.</p>
