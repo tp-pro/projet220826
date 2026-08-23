@@ -61,7 +61,13 @@ export function FestivalCard({
               {FESTIVAL_CATEGORY_LABELS[category] ?? category}
             </Badge>
           ))}
-          <span className="text-xs font-medium text-contour rounded-full px-2.5 py-0.5 border border-border">
+          <span
+            className={`text-xs font-medium rounded-full px-2.5 py-0.5 border ${
+              listingCount > 0
+                ? 'border-beacon-dark bg-beacon-dark text-white'
+                : 'border-border text-contour'
+            }`}
+          >
             {formatListingCount(listingCount)}
           </span>
         </div>
