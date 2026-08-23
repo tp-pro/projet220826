@@ -8,6 +8,7 @@ import { listings, users } from '@/db/schema';
 import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { DeleteAccountButton } from '@/components/profile/DeleteAccountButton';
 import { ProfileForm } from '@/components/profile/ProfileForm';
+import { buttonClass } from '@/components/ui/Button';
 import { signOutAction } from '@/lib/auth/actions';
 import { accountDeletionBlockReason } from '@/lib/profile/actions';
 import { createClient } from '@/lib/supabase/server';
