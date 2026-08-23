@@ -24,41 +24,41 @@ export function NewPasswordForm() {
   const [success, setSuccess] = useState(false);
   
   useEffect(() => {
-  const supabase = createClient();
-  const code = searchParams.get('code');
+    const supabase = createClient();
+    const code = searchParams.get('code');
 
-  async function initialize() {
-    // Lien de récupération Supabase en PKCE
-    if (code) {
-      const { error } = await supabase.auth.exchangeCodeForSession(code);
+    async function initialize() {
+      // Lien de récupération Supabase en PKCE
+      if (code) {
+        const { error } = await supabase.auth.exchangeCodeForSession(code);
 
-      if (error) {
-        console.error('Password recovery code exchange failed:', error);
-        setReady(false);
+        if (error) {
+          console.error('Password recovery code exchange failed:', error);
+          setReady(false);
+          setChecking(false);
+          return;
+        }
+
+        setReady(true);
         setChecking(false);
+
+        // Le code PKCE est à usage unique : on le retire de l'URL
+        router.replace('/mot-de-passe-oublie/nouveau');
         return;
       }
 
-      setReady(true);
-      setChecking(false);
+      // Permet également à un utilisateur déjà connecté
+      // d'accéder directement à cette page.
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
 
-      // Le code PKCE est à usage unique : on le retire de l'URL
-      router.replace('/mot-de-passe-oublie/nouveau');
-      return;
+      setReady(Boolean(session));
+      setChecking(false);
     }
 
-    // Permet également à un utilisateur déjà connecté
-    // d'accéder directement à cette page.
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-
-    setReady(Boolean(session));
-    setChecking(false);
-  }
-
-  void initialize();
-}, [router, searchParams]);
+    void initialize();
+  }, [router, searchParams]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
