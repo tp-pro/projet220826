@@ -82,7 +82,7 @@ export async function requestPasswordResetAction(
 
   const supabase = await createClient();
   await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${env.NEXT_PUBLIC_APP_URL}/mot-de-passe-oublie/nouveau`,
+    redirectTo: `${env.NEXT_PUBLIC_APP_URL}/auth/callback?next=/mot-de-passe-oublie/nouveau`,
   });
 
   return {
