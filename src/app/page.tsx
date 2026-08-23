@@ -84,7 +84,7 @@ export default async function Home() {
           Trouvez l’hébergement idéal pour votre festival sur {siteConfig.name}
         </h2>
         <p className="mt-2 text-muted">
-          Trouve un logement pour ton prochain festival, proposé par d&apos;autres festivaliers.
+          Trouve un logement pour ton prochain festival, proposé par les habitants à proximité.
         </p>
       </section>
 
