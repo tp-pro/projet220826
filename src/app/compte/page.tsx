@@ -46,6 +46,21 @@ export default async function ComptePage() {
       <Breadcrumbs items={[{ label: 'Mon compte' }]} />
       <h1 className="text-2xl font-semibold">Mon compte</h1>
 
+      <div className="mt-4 flex flex-wrap gap-2">
+        <Link
+          href={myListing ? `/logements/${myListing.id}/modifier` : '/logements/nouveau'}
+          className={buttonClass('primary')}
+        >
+          {myListing ? 'Mon logement' : 'Créer un logement'}
+        </Link>
+        <Link href="/mes-demandes" className={buttonClass('secondary')}>
+          Mes demandes de mise en relation
+        </Link>
+        <Link href="/logements/demandes" className={buttonClass('secondary')}>
+          Demandes reçues sur mon logement
+        </Link>
+      </div>
+
       {myListing?.status === 'published' && (
         <p
           role="status"
@@ -82,18 +97,6 @@ export default async function ComptePage() {
       </dl>
 
       <div className="mt-8 space-y-2 text-sm">
-        <Link
-          href={myListing ? `/logements/${myListing.id}/modifier` : '/logements/nouveau'}
-          className="block underline"
-        >
-          {myListing ? 'Mon logement' : 'Créer un logement'}
-        </Link>
-        <Link href="/mes-demandes" className="block underline">
-          Mes demandes de mise en relation
-        </Link>
-        <Link href="/logements/demandes" className="block underline">
-          Demandes reçues sur mon logement
-        </Link>
         <Link href="/mot-de-passe-oublie/nouveau" className="block underline">
           Changer mon mot de passe
         </Link>
