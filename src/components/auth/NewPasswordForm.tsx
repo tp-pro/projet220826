@@ -1,6 +1,6 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { type FormEvent, useEffect, useState } from 'react';
 
 import { createClient } from '@/lib/supabase/client';
@@ -13,6 +13,8 @@ import { createClient } from '@/lib/supabase/client';
  */
 export function NewPasswordForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+
   const [checking, setChecking] = useState(true);
   const [ready, setReady] = useState(false);
   const [password, setPassword] = useState('');
@@ -20,26 +22,43 @@ export function NewPasswordForm() {
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState(false);
-
+  
   useEffect(() => {
-    const supabase = createClient();
+  const supabase = createClient();
+  const code = searchParams.get('code');
 
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'PASSWORD_RECOVERY' || session) {
-        setReady(true);
+  async function initialize() {
+    // Lien de récupération Supabase en PKCE
+    if (code) {
+      const { error } = await supabase.auth.exchangeCodeForSession(code);
+
+      if (error) {
+        console.error('Password recovery code exchange failed:', error);
+        setReady(false);
+        setChecking(false);
+        return;
       }
-      setChecking(false);
-    });
 
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) setReady(true);
+      setReady(true);
       setChecking(false);
-    });
 
-    return () => subscription.unsubscribe();
-  }, []);
+      // Le code PKCE est à usage unique : on le retire de l'URL
+      router.replace('/mot-de-passe-oublie/nouveau');
+      return;
+    }
+
+    // Permet également à un utilisateur déjà connecté
+    // d'accéder directement à cette page.
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
+
+    setReady(Boolean(session));
+    setChecking(false);
+  }
+
+  void initialize();
+}, [router, searchParams]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
