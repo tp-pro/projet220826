@@ -321,8 +321,11 @@ export async function rejectBookingAction(
   if (!user) return { error: 'Non connecté.', success: false };
 
   const bookingId = String(formData.get('bookingId') ?? '');
-  const reason = String(formData.get('reason') ?? '').trim();
-  if (!bookingId || !reason) return { error: 'Motif de refus requis.', success: false };
+  // Même champ texte que l'acceptation (voir BookingRequestActions) — requis ici uniquement,
+  // écrit comme motif de refus.
+  const reason = String(formData.get('message') ?? '').trim();
+  if (!bookingId || !reason)
+    return { error: 'Merci de renseigner un message pour le refus.', success: false };
 
   const [row] = await db
     .select({ listing: listings, festivalSlug: festivals.slug })

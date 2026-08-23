@@ -13,43 +13,34 @@ export function BookingRequestActions({ bookingId }: { bookingId: string }) {
     error: null,
     success: false,
   });
+  const pending = acceptPending || rejectPending;
 
   return (
-    <div className="mt-3 space-y-2">
-      <div className="flex flex-wrap items-start gap-2">
-        <form action={acceptFormAction} className="flex flex-1 flex-wrap items-center gap-2">
-          <input type="hidden" name="bookingId" value={bookingId} />
-          <input
-            type="text"
-            name="message"
-            placeholder="Message pour le festivalier (optionnel)"
-            className="min-w-48 flex-1 rounded border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:bg-transparent"
-          />
-          <button
-            type="submit"
-            disabled={acceptPending}
-            className="rounded bg-gray-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-gray-900"
-          >
-            {acceptPending ? '…' : 'Accepter'}
-          </button>
-        </form>
-        <form action={rejectFormAction} className="flex flex-1 flex-wrap items-center gap-2">
-          <input type="hidden" name="bookingId" value={bookingId} />
-          <input
-            type="text"
-            name="reason"
-            required
-            placeholder="Motif du refus"
-            className="min-w-48 flex-1 rounded border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:bg-transparent"
-          />
-          <button
-            type="submit"
-            disabled={rejectPending}
-            className="rounded border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50 dark:border-gray-700"
-          >
-            {rejectPending ? '…' : 'Refuser'}
-          </button>
-        </form>
+    <form className="mt-3 space-y-2">
+      <input type="hidden" name="bookingId" value={bookingId} />
+      <textarea
+        name="message"
+        rows={2}
+        placeholder="Message pour le festivalier (obligatoire en cas de refus)"
+        className="w-full rounded border border-gray-300 px-2 py-1.5 text-sm dark:border-gray-700 dark:bg-transparent"
+      />
+      <div className="flex flex-wrap gap-2">
+        <button
+          type="submit"
+          formAction={acceptFormAction}
+          disabled={pending}
+          className="rounded bg-gray-900 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-gray-900"
+        >
+          {acceptPending ? '…' : 'Accepter'}
+        </button>
+        <button
+          type="submit"
+          formAction={rejectFormAction}
+          disabled={pending}
+          className="rounded border border-gray-300 px-3 py-1.5 text-sm disabled:opacity-50 dark:border-gray-700"
+        >
+          {rejectPending ? '…' : 'Refuser'}
+        </button>
       </div>
       {acceptState.error && (
         <p role="alert" className="text-sm text-red-600 dark:text-red-400">
@@ -61,6 +52,6 @@ export function BookingRequestActions({ bookingId }: { bookingId: string }) {
           {rejectState.error}
         </p>
       )}
-    </div>
+    </form>
   );
 }
