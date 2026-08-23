@@ -9,7 +9,9 @@ import { Breadcrumbs } from '@/components/layout/Breadcrumbs';
 import { DeleteAccountButton } from '@/components/profile/DeleteAccountButton';
 import { ProfileForm } from '@/components/profile/ProfileForm';
 import { buttonClass } from '@/components/ui/Button';
+import { PendingDot } from '@/components/ui/PendingDot';
 import { signOutAction } from '@/lib/auth/actions';
+import { getHostPendingActions } from '@/lib/host/pending-actions';
 import { accountDeletionBlockReason } from '@/lib/profile/actions';
 import { createClient } from '@/lib/supabase/server';
 
@@ -41,6 +43,9 @@ export default async function ComptePage() {
     .limit(1);
 
   const accountBlockReason = await accountDeletionBlockReason(user.id);
+  const { listingPendingReview, pendingBookingRequestsCount } = await getHostPendingActions(
+    user.id
+  );
 
   return (
     <div className="mx-auto max-w-sm px-4 py-12">
@@ -50,15 +55,27 @@ export default async function ComptePage() {
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
           href={myListing ? `/logements/${myListing.id}/modifier` : '/logements/nouveau'}
-          className={buttonClass('primary')}
+          className={buttonClass('primary', 'relative')}
         >
           {myListing ? 'Mon logement' : 'Créer un logement'}
+          {listingPendingReview && (
+            <>
+              <PendingDot />
+              <span className="sr-only"> (en attente de validation)</span>
+            </>
+          )}
         </Link>
         <Link href="/mes-demandes" className={buttonClass('secondary')}>
           Mes demandes de mise en relation
         </Link>
-        <Link href="/logements/demandes" className={buttonClass('secondary')}>
+        <Link href="/logements/demandes" className={buttonClass('secondary', 'relative')}>
           Demandes reçues sur mon logement
+          {pendingBookingRequestsCount > 0 && (
+            <>
+              <PendingDot />
+              <span className="sr-only"> ({pendingBookingRequestsCount} en attente)</span>
+            </>
+          )}
         </Link>
       </div>
 
