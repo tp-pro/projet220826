@@ -30,10 +30,15 @@ export function NewPasswordForm() {
     async function initialize() {
       // Lien de récupération Supabase en PKCE
       if (code) {
-        const { error } = await supabase.auth.exchangeCodeForSession(code);
+        const { error: exchangeError } =
+          await supabase.auth.exchangeCodeForSession(code);
 
-        if (error) {
-          console.error('Password recovery code exchange failed:', error);
+        if (exchangeError) {
+          console.error(
+            'Password recovery code exchange failed:',
+            exchangeError,
+          );
+
           setReady(false);
           setChecking(false);
           return;
@@ -42,13 +47,21 @@ export function NewPasswordForm() {
         setReady(true);
         setChecking(false);
 
-        // Le code PKCE est à usage unique : on le retire de l'URL
+        /*
+         * Le code PKCE est temporaire et à usage unique.
+         * Une fois échangé, on le retire de l'URL.
+         */
         router.replace('/mot-de-passe-oublie/nouveau');
+
         return;
       }
 
-      // Permet également à un utilisateur déjà connecté
-      // d'accéder directement à cette page.
+      /*
+       * Cas 2 : utilisateur déjà authentifié.
+       *
+       * Cela permet notamment de conserver le lien actuellement présent
+       * depuis la page /compte.
+       */
       const {
         data: { session },
       } = await supabase.auth.getSession();
