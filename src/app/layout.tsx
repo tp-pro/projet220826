@@ -26,6 +26,21 @@ export const metadata: Metadata = {
     template: `%s | ${siteConfig.name}`,
   },
   description: siteConfig.description,
+
+  robots:
+  process.env.NEXT_PUBLIC_NOINDEX === 'true'
+    ? {
+        index: false,
+        follow: false,
+        googleBot: {
+          index: false,
+          follow: false,
+        },
+      }
+    : {
+        index: true,
+        follow: true,
+      },
 };
 
 export default function RootLayout({ children }: LayoutProps<'/'>) {
